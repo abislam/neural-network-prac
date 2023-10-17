@@ -1,5 +1,3 @@
-import numpy as np
-
 '''
 Activation functions
     step function: input > 0 = 1, input <= 0 = 0
@@ -8,30 +6,21 @@ Activation functions
     
 '''
 
+
+import numpy as np
+import nnfs
+from nnfs.datasets import spiral_data
+
+
+nnfs.init()
+
 np.random.seed(0)
 
-#3 batches of 4 inputs
 
-#initial inputs
-#3 neurons 4 inputs
 #Sample training data. Variable name X is a convention for training data in Neural Networks.
-X = [[1, 2, 3, 2.5],
-     [2.0, 5.0, -1.0, 2.0],
-     [-1.5, 2.7, 3.3, -0.8]]
+#Lower case y is the target or classifications
+X, y = spiral_data(100, 3) #100 feature sets of 3 classes
 
-inputs = [0, 2, -1, 3.3, -2.7, 1.1, 2.2, -100]
-output = []
-
-#ReLU Logic Example
-for i in inputs:
-        if i > 0:
-            output.append(i)
-        elif i <= 0:
-              output.append(0)
-
-print(output)
-
-'''
 class Layer_Dense:
     def __init__(self, n_inputs, n_neurons):
         self.weights = 0.10 * np.random.randn(n_inputs, n_neurons) #generate weights based on range of #inputs and #neurons
@@ -39,11 +28,23 @@ class Layer_Dense:
     def forward(self, inputs):
         self.output = np.dot(inputs, self.weights) + self.biases
 
-layer1 = Layer_Dense(4,5) # we know from X that initial number of inputs is 4, number of neurons is up to you
-layer2 = Layer_Dense(5,2) # since layer1 had 5 neurons, layer 2 will have 5 inputs, again, number of neurons is up to you
+
+'''
+#ReLU Logic Example
+    for i in inputs:
+            if i > 0:
+                output.append(i)
+            elif i <= 0:
+                output.append(0)
+'''
+class Activation_ReLU:
+     def forward(self, inputs):
+          self.output = np.maximum(0, inputs)
+
+layer1 = Layer_Dense(2,5) # number of inputs, number of neurons
+activation1 = Activation_ReLU()
 
 layer1.forward(X) #forward propogate layer1
-print(layer1.output)
-layer2.forward(layer1.output) #after layer1 forward propogation, forward propogate layer 2. In this case its the final output
-print(layer2.output)
-'''
+activation1.forward(layer1.output) #apply ReLU to forward prop outputs of layer1
+print(activation1.output)
+
