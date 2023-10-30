@@ -20,12 +20,12 @@ class Activation_ReLU:
 
 class Activation_Softmax:
     def forward(self, inputs):
-        exp_values = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
-        probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True)
+        exp_values = np.exp(inputs - np.max(inputs, axis=1, keepdims=True)) #data will be in batches, so axis 1, keepdims true
+        probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True) #data will be in batches, so axis 1, keepdims true
         self.output = probabilities
 
 
-X, y = spiral_data(samples=100, classes=3)
+X, y = spiral_data(samples=100, classes=3) #spiral data is just xy coordinates data
 
 dense1 = Layer_Dense(2,3)
 activation1 = Activation_ReLU()
